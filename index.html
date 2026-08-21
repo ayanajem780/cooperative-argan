@@ -553,8 +553,10 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
     </div>
     <div class="filters reveal">
       <button class="filter-chip active" data-filter="tous" onclick="filterProducts('tous',this)">Tous les produits</button>
-      <button class="filter-chip" data-filter="Amlou" onclick="filterProducts('Amlou',this)">Amlou</button>
-      <button class="filter-chip" data-filter="Cosmétique" onclick="filterProducts('Cosmétique',this)">Huile d'argan</button>
+      <button class="filter-chip" data-filter="Épicerie" onclick="filterProducts('Épicerie',this)">Épicerie</button>
+      <button class="filter-chip" data-filter="Beauté &amp; Soin" onclick="filterProducts('Beauté &amp; Soin',this)">Beauté &amp; Soin</button>
+      <button class="filter-chip" data-filter="Trésors du Maroc" onclick="filterProducts('Trésors du Maroc',this)">Trésors du Maroc</button>
+      <button class="filter-chip" data-filter="Coffrets" onclick="filterProducts('Coffrets',this)">Coffrets</button>
     </div>
     <div class="product-grid" id="productGrid"></div>
     <p class="price-note reveal">Les prix peuvent évoluer selon la saison et le coût des matières premières.</p>
@@ -728,28 +730,28 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
 /* ================= DATA ================= */
 const PRODUCTS = [
   {
-    id:'amlou-amande', cat:'Amlou', name:"Amlou amande & argan",
+    id:'amlou-amande', cat:'Épicerie', name:"Amlou amande & argan",
     short:"Amandes torréfiées, huile d'argan et miel, préparés selon notre recette familiale.",
     desc:"Notre Amlou à l'amande est préparé selon la recette transmise dans notre famille, à partir d'amandes, de notre huile d'argan et de miel — 100% naturel. Informations de conservation indiquées sur l'étiquette.",
     images:['assets/amlou-amande.jpg'],
     variants:[{size:'200 g',price:11.90},{size:'500 g',price:26.90},{size:'1 kg',price:49.90}]
   },
   {
-    id:'amlou-cajou', cat:'Amlou', name:"Amlou cajou & argan",
+    id:'amlou-cajou', cat:'Épicerie', name:"Amlou cajou & argan",
     short:"Une variante gourmande à base de noix de cajou et de notre huile d'argan familiale.",
     desc:"Préparé artisanalement à partir de noix de cajou sélectionnées et de notre huile d'argan — 100% naturel. Informations de conservation indiquées sur l'étiquette.",
     images:['assets/amlou-cajou.jpg'],
     variants:[{size:'200 g',price:14.90},{size:'500 g',price:32.90},{size:'1 kg',price:59.90}]
   },
   {
-    id:'amlou-pistache', cat:'Amlou', name:"Amlou pistache & argan",
+    id:'amlou-pistache', cat:'Épicerie', name:"Amlou pistache & argan",
     short:"Notre version la plus raffinée, à la pistache, préparée en petite quantité.",
     desc:"Préparé avec des pistaches et notre huile d'argan familiale, dans le respect de notre savoir-faire traditionnel — 100% naturel. Informations de conservation indiquées sur l'étiquette.",
     images:['assets/amlou-pistache.jpg'],
     variants:[{size:'200 g',price:17.90},{size:'500 g',price:39.90},{size:'1 kg',price:74.90}]
   },
   {
-    id:'huile-argan', cat:'Cosmétique', name:"Huile d'argan cosmétique",
+    id:'huile-argan', cat:'Beauté & Soin', name:"Huile d'argan cosmétique",
     short:"Huile d'argan pure, extraite artisanalement à partir de nos arganiers familiaux.",
     desc:"Notre huile d'argan cosmétique est extraite artisanalement à partir des fruits de nos arganiers familiaux. Conseils de conservation et d'utilisation à compléter dès que les informations officielles seront fournies par la coopérative. Aucune propriété médicale ou thérapeutique n'est ici affirmée.",
     images:['assets/huile-argan-marbre.jpg'],
