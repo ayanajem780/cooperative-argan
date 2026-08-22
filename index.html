@@ -362,7 +362,7 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
 .pmodal-grid{display:grid;grid-template-columns:1fr 1fr;}
 .pmodal-media{display:flex;flex-direction:column;}
 .pmodal-grid .photo-frame{min-height:340px;flex:1;border-radius:0;}
-.pmodal-grid .photo-frame.has-img img{object-fit:contain;padding:14px;}
+.pmodal-grid .photo-frame.has-img img{object-fit:cover;padding:0;}
 .pmodal-thumbs{display:flex;gap:8px;padding:10px;background:var(--brun);}
 .pmodal-thumb{width:52px;height:52px;border-radius:2px;overflow:hidden;border:1.5px solid transparent;padding:0;background:none;flex-shrink:0;}
 .pmodal-thumb.active{border-color:var(--or-clair);}
@@ -753,7 +753,7 @@ const PRODUCTS = [
     id:'amlou-amande', cat:'Épicerie', name:"Amlou amande & argan",
     short:"Amandes torréfiées, huile d'argan et miel, préparés selon notre recette familiale.",
     desc:"Notre Amlou à l'amande est préparé selon la recette transmise dans notre famille, à partir d'amandes, de notre huile d'argan et de miel — 100% naturel. Informations de conservation indiquées sur l'étiquette.",
-    images:['assets/amlou-amande.jpg'],
+    images:['assets/amlou-amande.jpg','assets/amlou-amande-2.jpg'],
     variants:[{size:'200 g',price:11.90},{size:'500 g',price:26.90},{size:'1 kg',price:49.90}]
   },
   {
@@ -924,12 +924,12 @@ let modalImgIndex = 0;
 function selectModalImg(i){ modalImgIndex = i; document.getElementById('pmodalMainImg').src = activeProduct.images[i]; document.querySelectorAll('.pmodal-thumb').forEach((t,ti)=>t.classList.toggle('active',ti===i)); }
 function renderProductModal(){
   const p = activeProduct;
-  modalImgIndex = 0;
-  const related = PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
   const hasImgs = p.images && p.images.length;
+  modalImgIndex = hasImgs ? p.images.length-1 : 0;
+  const related = PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
   const mainFrame = hasImgs
-    ? `<div class="photo-frame has-img"><img id="pmodalMainImg" src="${p.images[0]}" alt="${p.name}"></div>
-       ${p.images.length>1 ? `<div class="pmodal-thumbs">${p.images.map((im,i)=>`<button class="pmodal-thumb ${i===0?'active':''}" onclick="selectModalImg(${i})"><img src="${im}" alt=""></button>`).join('')}</div>` : ''}`
+    ? `<div class="photo-frame has-img"><img id="pmodalMainImg" src="${p.images[modalImgIndex]}" alt="${p.name}"></div>
+       ${p.images.length>1 ? `<div class="pmodal-thumbs">${p.images.map((im,i)=>`<button class="pmodal-thumb ${i===modalImgIndex?'active':''}" onclick="selectModalImg(${i})"><img src="${im}" alt=""></button>`).join('')}</div>` : ''}`
     : `<div class="photo-frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/></svg></div>`;
   document.getElementById('productModal').innerHTML = `
     <button class="pmodal-close" onclick="closeProductModal()" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
