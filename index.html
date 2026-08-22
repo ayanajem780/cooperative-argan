@@ -921,15 +921,16 @@ function selectVariant(size){
   renderProductModal();
 }
 let modalImgIndex = 0;
-function selectModalImg(i){ modalImgIndex = i; document.getElementById('pmodalMainImg').src = activeProduct.images[i]; document.querySelectorAll('.pmodal-thumb').forEach((t,ti)=>t.classList.toggle('active',ti===i)); }
+function selectModalImg(i){ modalImgIndex = i; const p=activeProduct; const modalImgs=(p.images && p.images.length>1)?p.images.slice(1):p.images; document.getElementById('pmodalMainImg').src = modalImgs[i]; document.querySelectorAll('.pmodal-thumb').forEach((t,ti)=>t.classList.toggle('active',ti===i)); }
 function renderProductModal(){
   const p = activeProduct;
-  const hasImgs = p.images && p.images.length;
-  modalImgIndex = hasImgs ? p.images.length-1 : 0;
+  const modalImgs = (p.images && p.images.length>1) ? p.images.slice(1) : p.images;
+  const hasImgs = modalImgs && modalImgs.length;
+  modalImgIndex = 0;
   const related = PRODUCTS.filter(x=>x.id!==p.id).slice(0,3);
   const mainFrame = hasImgs
-    ? `<div class="photo-frame has-img"><img id="pmodalMainImg" src="${p.images[modalImgIndex]}" alt="${p.name}"></div>
-       ${p.images.length>1 ? `<div class="pmodal-thumbs">${p.images.map((im,i)=>`<button class="pmodal-thumb ${i===modalImgIndex?'active':''}" onclick="selectModalImg(${i})"><img src="${im}" alt=""></button>`).join('')}</div>` : ''}`
+    ? `<div class="photo-frame has-img"><img id="pmodalMainImg" src="${modalImgs[modalImgIndex]}" alt="${p.name}"></div>
+       ${modalImgs.length>1 ? `<div class="pmodal-thumbs">${modalImgs.map((im,i)=>`<button class="pmodal-thumb ${i===modalImgIndex?'active':''}" onclick="selectModalImg(${i})"><img src="${im}" alt=""></button>`).join('')}</div>` : ''}`
     : `<div class="photo-frame"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 2C9 6 6 9 6 13a6 6 0 0012 0c0-4-3-7-6-11z"/></svg></div>`;
   document.getElementById('productModal').innerHTML = `
     <button class="pmodal-close" onclick="closeProductModal()" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
