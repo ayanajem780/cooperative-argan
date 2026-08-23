@@ -130,6 +130,28 @@ nav.mainnav a:hover{color:var(--olive-fonce);}
 .hero .btn-outline:hover{background:var(--blanc);color:var(--brun);}
 
 /* ===== Sections generic ===== */
+/* ===== Hero Amour (nouveau) ===== */
+.hero-love{
+  position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-love-bg{
+  position:absolute;inset:0;
+  background-image:url('images/hero-amour.jpg');
+  background-size:cover;background-position:center 20%;
+}
+.hero-love-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(59,44,32,.35) 0%, rgba(59,44,32,.6) 100%);
+}
+.hero-love-content{
+  position:relative;z-index:2;max-width:720px;padding:0 32px;text-align:center;
+}
+.hero-love-content p{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+  font-size:clamp(22px,3vw,34px);line-height:1.4;color:var(--blanc);
+  margin:0;
+}
 section{padding:110px 0;}
 .section-alt{background:var(--creme);}
 .section-head{max-width:640px;margin-bottom:56px;}
@@ -444,6 +466,13 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
     </div>
   </div>
 </header>
+
+<section class="hero-love">
+  <div class="hero-love-bg"></div>
+  <div class="hero-love-content">
+    <p>Avec beaucoup d'amour, nous transformons chaque matière première en une délicieuse pépite ou en une solution beauté, pour vous permettre de vous reconnecter à la nature d'une manière unique.</p>
+  </div>
+</section>
 
 <section class="hero" id="accueil">
   <div class="hero-bg"></div>
