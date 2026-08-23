@@ -118,6 +118,7 @@ nav.mainnav a:hover{color:var(--olive-fonce);}
     radial-gradient(circle at 85% 20%, rgba(255,255,255,.4) 0, transparent 2px);
   background-size:140px 140px;
 }
+.hero-3d{position:absolute;inset:0;z-index:1;pointer-events:none;}
 .hero-content{position:relative;z-index:2;max-width:760px;padding:0 32px;color:var(--blanc);}
 .hero-content .eyebrow{color:var(--or-clair);}
 .hero-content .eyebrow::before{background:var(--or-clair);}
@@ -477,6 +478,7 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
 
 <section class="hero" id="accueil">
   <div class="hero-bg"></div>
+  <div class="hero-3d" id="heroParticles"></div>
   <div class="hero-content">
     <span class="eyebrow">Coopérative familiale — Tabia, Maroc</span>
     <h1>Du terroir marocain jusqu'à votre maison.</h1>
@@ -1023,4 +1025,82 @@ initReveal();
 setTimeout(initReveal, 300);
 </script>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/128/three.min.js"></script>
+<script>
+(function(){
+  const container = document.getElementById('heroParticles');
+  if(!container || typeof THREE === 'undefined') return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, container.clientWidth/container.clientHeight, 0.1, 100);
+  camera.position.z = 20;
+
+  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const dirLight = new THREE.DirectionalLight(0xffe8c2, 1);
+  dirLight.position.set(5,10,8);
+  scene.add(dirLight);
+
+  const colors = { amande:0xC9A26D, argan:0x4B3A28, pistache:0xEDE3C8 };
+  function makeMaterial(type){
+    return new THREE.MeshStandardMaterial({color:colors[type], roughness:0.55, metalness:0.05});
+  }
+
+  function makeItem(){
+    const types = ['amande','argan','pistache'];
+    const type = types[Math.floor(Math.random()*types.length)];
+    const geo = new THREE.SphereGeometry(type==='amande'?0.45:type==='argan'?0.35:0.4,16,16);
+    const mesh = new THREE.Mesh(geo, makeMaterial(type));
+    if(type==='amande'){ mesh.scale.set(1,1.6,0.7); }
+    resetItem(mesh, true);
+    mesh.userData.speed = 2 + Math.random()*2.5;
+    mesh.userData.rotSpeed = (Math.random()-0.5)*2;
+    return mesh;
+  }
+
+  function visibleBounds(){
+    const vFOV = camera.fov * Math.PI/180;
+    const h = 2*Math.tan(vFOV/2)*camera.position.z;
+    const w = h * (container.clientWidth/container.clientHeight);
+    return {w,h};
+  }
+
+  function resetItem(mesh, randomStart){
+    const b = visibleBounds();
+    mesh.position.x = (Math.random()-0.5)*b.w*0.9;
+    mesh.position.y = randomStart ? (Math.random()*b.h*2 - b.h*0.5) : b.h/2 + 2;
+    mesh.position.z = (Math.random()-0.5)*4;
+    mesh.rotation.set(Math.random()*6,Math.random()*6,Math.random()*6);
+  }
+
+  const items = [];
+  for(let i=0;i<22;i++){ const m = makeItem(); scene.add(m); items.push(m); }
+
+  let lastT = performance.now();
+  function animate(t){
+    const dt = Math.min((t-lastT)/1000, 0.05);
+    lastT = t;
+    const b = visibleBounds();
+    items.forEach(m=>{
+      m.position.y -= m.userData.speed*dt;
+      m.rotation.x += m.userData.rotSpeed*dt;
+      m.rotation.y += m.userData.rotSpeed*dt*0.7;
+      if(m.position.y < -b.h/2 - 2){ resetItem(m, false); }
+    });
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+
+  window.addEventListener('resize', ()=>{
+    camera.aspect = container.clientWidth/container.clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(container.clientWidth, container.clientHeight);
+  });
+})();
+</script>
 </html>
