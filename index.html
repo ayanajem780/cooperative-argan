@@ -1029,66 +1029,32 @@ renderCart();
 initReveal();
 setTimeout(initReveal, 300);
 </script>
-<script>
-(function(){
-  const btn = document.getElementById('heroNextBtn');
-  const overlay = document.getElementById('pageTransition');
-  const target = document.getElementById('accueil');
-  if(!btn || !overlay || !target) return;
-  let animating = false;
-  btn.addEventListener('click', function(){
-    if(animating) return;
-    animating = true;
-    overlay.classList.add('active');
-    setTimeout(function(){
-      target.scrollIntoView({behavior:'auto', block:'start'});
-      target.classList.add('page-reveal');
-      setTimeout(function(){
-        overlay.classList.add('leaving');
-        setTimeout(function(){
-          overlay.classList.remove('active','leaving');
-          target.classList.remove('page-reveal');
-          animating = false;
-        }, 380);
-      }, 60);
-    }, 450);
-  });
-})();
-</script>
-<script>
-(function(){
-  const el = document.getElementById('logoSpin');
-  if(!el || typeof THREE === 'undefined') return;
-  const size = 86;
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 10);
-  camera.position.z = 3.2;
-  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
-  renderer.setSize(size, size);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  el.appendChild(renderer.domElement);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.9));
-  const dl = new THREE.DirectionalLight(0xffffff, 0.6);
-  dl.position.set(2,3,4);
-  scene.add(dl);
-  const loader = new THREE.TextureLoader();
-  loader.load('images/logo-mark.png', function(tex){
-    tex.colorSpace = THREE.SRGBColorSpace;
-    const geo = new THREE.CircleGeometry(1, 64);
-    const mat = new THREE.MeshStandardMaterial({map:tex, transparent:true, side:THREE.DoubleSide, roughness:0.4, metalness:0.3});
-    const disc = new THREE.Mesh(geo, mat);
-    scene.add(disc);
-    function animate(){
-      disc.rotation.y += 0.018;
-      renderer.render(scene, camera);
-      requestAnimationFrame(animate);
-    }
-    animate();
-  });
-})();
-</script>
-</body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  const container = document.getElementById('heroParticles');
+  if(!container || typeof THREE === 'undefined') return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, container.clientWidth/container.clientHeight, 0.1, 100);
+  camera.position.z = 20;
+
+  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  container.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const dirLight = new THREE.DirectionalLight(0xffe8c2, 1);
+  dirLight.position.set(5,10,8);
+  scene.add(dirLight);
+
+  const textureLoader = new THREE.TextureLoader();
+  const texPaths = { amande:'images/amande-3d.png', argan:'images/argan-3d.png', pistache:'images/pistache-3d.png' };
+  const textures = {};
+  const types = ['amande','argan','pistache'];
+
+  function makeItem(type){
     const tex = textures[type];
     const mat = new THREE.SpriteMaterial({map:tex, transparent:true, depthWrite:false});
     const sprite = new THREE.Sprite(mat);
@@ -1150,6 +1116,42 @@ setTimeout(initReveal, 300);
     camera.updateProjectionMatrix();
     renderer.setSize(container.clientWidth, container.clientHeight);
   });
+})();
+</script>
+<script>
+(function(){
+  const el = document.getElementById('logoSpin');
+  if(!el || typeof THREE === 'undefined') return;
+  const size = 86;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 10);
+  camera.position.z = 3.2;
+  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  renderer.setSize(size, size);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  el.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+  const dl = new THREE.DirectionalLight(0xffffff, 0.6);
+  dl.position.set(2,3,4);
+  scene.add(dl);
+  const loader = new THREE.TextureLoader();
+  loader.load('images/logo-mark.png', function(tex){
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const geo = new THREE.CircleGeometry(1, 64);
+    const mat = new THREE.MeshStandardMaterial({map:tex, transparent:true, side:THREE.DoubleSide, roughness:0.4, metalness:0.3});
+    const disc = new THREE.Mesh(geo, mat);
+    scene.add(disc);
+    function animate(){
+      disc.rotation.y += 0.018;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+  });
+})();
+</script>
+</body>
+</html>
 })();
 </script>
 </html>
