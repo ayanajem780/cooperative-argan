@@ -507,9 +507,6 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
     </div>
   </div>
 </section>
-
-<svg class="contour" viewBox="0 0 1200 52" preserveAspectRatio="none"><path d="M0 40 C150 10, 300 45, 450 20 S 750 5, 900 30 S 1100 45, 1200 15"/></svg>
-
 <section class="section-alt" id="histoire">
   <div class="wrap histoire-grid">
     <div class="photo-frame has-img reveal">
@@ -1145,6 +1142,16 @@ setTimeout(initReveal, 300);
     animate();
   });
 })();
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const sections = document.querySelectorAll('body > section');
+  for(let i=0;i<sections.length-1;i++){
+    const wrap = document.createElement('div');
+    wrap.innerHTML = '<svg class="contour" viewBox="0 0 1200 52" preserveAspectRatio="none"><path d="M0 40 C150 10, 300 45, 450 20 S 750 5, 900 30 S 1100 45, 1200 15"/></svg>';
+    sections[i].insertAdjacentElement('afterend', wrap.firstElementChild);
+  }
+});
 </script>
 </body>
 </html>
