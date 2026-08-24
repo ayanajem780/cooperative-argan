@@ -124,6 +124,8 @@ nav.mainnav a:hover{color:var(--olive-fonce);}
 .amlou-drip svg{width:100%;height:110px;display:block;}
 .hero-content{position:relative;z-index:2;max-width:1900px;width:100%;padding:0 32px;color:var(--blanc);}
 .hero-content .eyebrow{color:var(--or-clair);}
+.logo-spin{width:86px;height:86px;margin-bottom:20px;}
+.logo-spin canvas{display:block;}
 .hero-content .eyebrow::before{background:var(--or-clair);}
 .hero h1{
   font-size:clamp(32px,4.4vw,62px);color:var(--blanc);margin:20px 0 22px;
@@ -489,6 +491,7 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
   <div class="hero-bg"></div>
   <div class="hero-3d" id="heroParticles"></div>
   <div class="hero-content">
+    <div class="logo-spin" id="logoSpin"></div>
     <span class="eyebrow">Coopérative familiale — Tabia, Maroc</span>
     <h1>Du terroir marocain jusqu'à votre maison.</h1>
     <p>Nés d'un savoir-faire familial transmis de génération en génération, nos produits sont sélectionnés et préparés avec soin, dans le respect de nos traditions.</p>
@@ -1049,6 +1052,38 @@ setTimeout(initReveal, 300);
         }, 380);
       }, 60);
     }, 450);
+  });
+})();
+</script>
+<script>
+(function(){
+  const el = document.getElementById('logoSpin');
+  if(!el || typeof THREE === 'undefined') return;
+  const size = 86;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 10);
+  camera.position.z = 3.2;
+  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
+  renderer.setSize(size, size);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  el.appendChild(renderer.domElement);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.9));
+  const dl = new THREE.DirectionalLight(0xffffff, 0.6);
+  dl.position.set(2,3,4);
+  scene.add(dl);
+  const loader = new THREE.TextureLoader();
+  loader.load('images/logo-mark.png', function(tex){
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const geo = new THREE.CircleGeometry(1, 64);
+    const mat = new THREE.MeshStandardMaterial({map:tex, transparent:true, side:THREE.DoubleSide, roughness:0.4, metalness:0.3});
+    const disc = new THREE.Mesh(geo, mat);
+    scene.add(disc);
+    function animate(){
+      disc.rotation.y += 0.018;
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
   });
 })();
 </script>
