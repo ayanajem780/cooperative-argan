@@ -157,6 +157,25 @@ nav.mainnav a:hover{color:var(--olive-fonce);}
   font-size:clamp(30px,4.2vw,46px);line-height:1.6;color:rgba(255,254,251,0.82);
   margin:0;
 }
+.hero-love-next{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,254,251,.6);background:transparent;cursor:pointer;z-index:6;display:flex;align-items:center;justify-content:center;transition:background .3s;padding:0;}
+.hero-love-next:hover{background:rgba(255,254,251,.15);}
+.hero-love-next span{display:block;width:10px;height:10px;border-right:2px solid var(--blanc);border-bottom:2px solid var(--blanc);transform:rotate(45deg);margin-top:-4px;}
+.page-transition{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;}
+.page-transition.active{opacity:1;}
+.page-transition-wave{position:absolute;left:0;right:0;bottom:0;height:130%;transform:translateY(100%);background:linear-gradient(160deg,var(--or) 0%,var(--olive) 55%,var(--olive-fonce) 100%);border-radius:45% 45% 0 0/18% 18% 0 0;}
+.page-transition.active .page-transition-wave{animation:ptRise .45s cubic-bezier(.65,0,.35,1) forwards;}
+@keyframes ptRise{ to{ transform:translateY(0%);} }
+.page-transition.leaving .page-transition-wave{animation:ptFallAway .35s ease-in forwards;}
+@keyframes ptFallAway{ to{ opacity:0; } }
+.pt-nut{position:absolute;width:64px;height:auto;opacity:0;filter:drop-shadow(0 10px 14px rgba(0,0,0,.25));}
+.page-transition.active .pt-nut1{left:20%;bottom:-40px;animation:ptNut1 .8s ease-out forwards;}
+.page-transition.active .pt-nut2{left:55%;bottom:-60px;width:52px;animation:ptNut2 .8s .05s ease-out forwards;}
+.page-transition.active .pt-nut3{left:75%;bottom:-30px;width:56px;animation:ptNut3 .8s .1s ease-out forwards;}
+@keyframes ptNut1{ 0%{opacity:0;transform:translateY(0) rotate(0deg);} 30%{opacity:1;} 100%{opacity:0;transform:translateY(-70vh) rotate(25deg);} }
+@keyframes ptNut2{ 0%{opacity:0;transform:translateY(0) rotate(0deg);} 30%{opacity:1;} 100%{opacity:0;transform:translateY(-80vh) rotate(-20deg);} }
+@keyframes ptNut3{ 0%{opacity:0;transform:translateY(0) rotate(0deg);} 30%{opacity:1;} 100%{opacity:0;transform:translateY(-65vh) rotate(15deg);} }
+.page-reveal{animation:pageReveal .5s ease-out both;}
+@keyframes pageReveal{ from{opacity:0;transform:scale(1.03);} to{opacity:1;transform:scale(1);} }
 section{padding:110px 0;}
 .section-alt{background:var(--creme);}
 .section-head{max-width:640px;margin-bottom:56px;}
@@ -478,6 +497,13 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
     <p>Avec beaucoup d'amour, nous transformons chaque matière première en une délicieuse pépite ou en une solution beauté, pour vous permettre de vous reconnecter à la nature d'une manière unique.</p>
 
   </div>
+  <button class="hero-love-next" id="heroNextBtn" aria-label="Découvrir"><span></span></button>
+<div class="page-transition" id="pageTransition">
+  <div class="page-transition-wave"></div>
+  <img src="images/amande-3d.png" class="pt-nut pt-nut1" alt="">
+  <img src="images/pistache-3d.png" class="pt-nut pt-nut2" alt="">
+  <img src="images/argan-3d.png" class="pt-nut pt-nut3" alt="">
+</div>
 </section>
 <section class="hero" id="accueil">
   <div class="hero-bg"></div>
@@ -1026,6 +1052,32 @@ renderFAQ();
 renderCart();
 initReveal();
 setTimeout(initReveal, 300);
+</script>
+<script>
+(function(){
+  const btn = document.getElementById('heroNextBtn');
+  const overlay = document.getElementById('pageTransition');
+  const target = document.getElementById('accueil');
+  if(!btn || !overlay || !target) return;
+  let animating = false;
+  btn.addEventListener('click', function(){
+    if(animating) return;
+    animating = true;
+    overlay.classList.add('active');
+    setTimeout(function(){
+      target.scrollIntoView({behavior:'auto', block:'start'});
+      target.classList.add('page-reveal');
+      setTimeout(function(){
+        overlay.classList.add('leaving');
+        setTimeout(function(){
+          overlay.classList.remove('active','leaving');
+          target.classList.remove('page-reveal');
+          animating = false;
+        }, 380);
+      }, 60);
+    }, 450);
+  });
+})();
 </script>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
