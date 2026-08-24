@@ -139,14 +139,13 @@ nav.mainnav a:hover{color:var(--olive-fonce);}
 /* ===== Sections generic ===== */
 /* ===== Hero Amour (nouveau) ===== */
 .hero-love{
-  position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;z-index:2;
+  position:relative;width:100%;aspect-ratio:1195/896;display:flex;align-items:center;justify-content:center;z-index:2;
   overflow:visible;
 }
 .hero-love-bg{
   position:absolute;inset:0;
   background-image:url('images/hero-amour.jpg');
-  background-size:contain;background-position:center center;background-repeat:no-repeat;
-  background-color:var(--brun);
+  background-size:cover;background-position:center center;background-repeat:no-repeat;
 }
 .hero-love-bg::after{
   content:'';position:absolute;inset:0;
