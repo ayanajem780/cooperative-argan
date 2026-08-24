@@ -1047,22 +1047,31 @@ setTimeout(initReveal, 300);
   dirLight.position.set(5,10,8);
   scene.add(dirLight);
 
-  const colors = { amande:0xC9A26D, argan:0x4B3A28, pistache:0xEDE3C8 };
-  function makeMaterial(type){
-    return new THREE.MeshStandardMaterial({color:colors[type], roughness:0.55, metalness:0.05});
-  }
+  const colors = { amande:0xC9A576, argan:0x5C4326, pistache:0xDCD9B0 };
+function makeMaterial(type){
+  return new THREE.MeshStandardMaterial({color:colors[type], roughness:0.6, metalness:0.04, flatShading:type==='argan'});
+}
 
-  function makeItem(){
-    const types = ['amande','argan','pistache'];
-    const type = types[Math.floor(Math.random()*types.length)];
-    const geo = new THREE.SphereGeometry(type==='amande'?0.45:type==='argan'?0.35:0.4,16,16);
-    const mesh = new THREE.Mesh(geo, makeMaterial(type));
-    if(type==='amande'){ mesh.scale.set(1,1.6,0.7); }
-    resetItem(mesh, true);
-    mesh.userData.speed = 2 + Math.random()*2.5;
-    mesh.userData.rotSpeed = (Math.random()-0.5)*2;
-    return mesh;
+function makeItem(){
+  const types = ['amande','argan','pistache'];
+  const type = types[Math.floor(Math.random()*types.length)];
+  let geo;
+  if(type==='amande'){
+    geo = new THREE.SphereGeometry(0.42,8,8);
+  } else if(type==='argan'){
+    geo = new THREE.IcosahedronGeometry(0.3,0);
+  } else {
+    geo = new THREE.SphereGeometry(0.4,12,10);
   }
+  const mesh = new THREE.Mesh(geo, makeMaterial(type));
+  if(type==='amande'){ mesh.scale.set(0.85,1.75,0.55); }
+  if(type==='pistache'){ mesh.scale.set(1,0.65,0.8); }
+  if(type==='argan'){ mesh.scale.set(1,1,1); }
+  resetItem(mesh, true);
+  mesh.userData.speed = 2 + Math.random()*2.5;
+  mesh.userData.rotSpeed = (Math.random()-0.5)*2;
+  return mesh;
+}
 
   function visibleBounds(){
     const vFOV = camera.fov * Math.PI/180;
