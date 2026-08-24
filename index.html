@@ -157,26 +157,6 @@ nav.mainnav a:hover{color:var(--olive-fonce);}
   font-size:clamp(30px,4.2vw,46px);line-height:1.6;color:rgba(255,254,251,0.82);
   margin:0;
 }
-.hero-love-next{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,254,251,.6);background:transparent;cursor:pointer;z-index:6;display:flex;align-items:center;justify-content:center;transition:background .3s;padding:0;}
-.hero-love-next:hover{background:rgba(255,254,251,.15);}
-.hero-love-next span{display:block;width:10px;height:10px;border-right:2px solid var(--blanc);border-bottom:2px solid var(--blanc);transform:rotate(45deg);margin-top:-4px;}
-.page-transition{position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0;}
-.page-transition.active{opacity:1;}
-.page-transition-wave{position:absolute;left:0;right:0;bottom:0;height:130%;transform:translateY(100%);background:linear-gradient(160deg,var(--or) 0%,var(--olive) 55%,var(--olive-fonce) 100%);border-radius:45% 45% 0 0/18% 18% 0 0;}
-.page-transition.active .page-transition-wave{animation:ptRise .45s cubic-bezier(.65,0,.35,1) forwards;}
-@keyframes ptRise{ to{ transform:translateY(0%);} }
-.page-transition.leaving .page-transition-wave{animation:ptFallAway .35s ease-in forwards;}
-@keyframes ptFallAway{ to{ opacity:0; } }
-.pt-nut{position:absolute;width:64px;height:auto;opacity:0;filter:drop-shadow(0 10px 14px rgba(0,0,0,.25));}
-.page-transition.active .pt-nut1{left:20%;bottom:-40px;animation:ptNut1 .8s ease-out forwards;}
-.page-transition.active .pt-nut2{left:55%;bottom:-60px;width:52px;animation:ptNut2 .8s .05s ease-out forwards;}
-.page-transition.active .pt-nut3{left:75%;bottom:-30px;width:56px;animation:ptNut3 .8s .1s ease-out forwards;}
-@keyframes ptNut1{ 0%{opacity:0;transform:translateY(0) rotate(0deg);} 30%{opacity:1;} 100%{opacity:0;transform:translateY(-70vh) rotate(25deg);} }
-@keyframes ptNut2{ 0%{opacity:0;transform:translateY(0) rotate(0deg);} 30%{opacity:1;} 100%{opacity:0;transform:translateY(-80vh) rotate(-20deg);} }
-@keyframes ptNut3{ 0%{opacity:0;transform:translateY(0) rotate(0deg);} 30%{opacity:1;} 100%{opacity:0;transform:translateY(-65vh) rotate(15deg);} }
-.page-reveal{animation:pageReveal .5s ease-out both;}
-@keyframes pageReveal{ from{opacity:0;transform:scale(1.03);} to{opacity:1;transform:scale(1);} }
-section{padding:110px 0;}
 .section-alt{background:var(--creme);}
 .section-head{max-width:640px;margin-bottom:56px;}
 .section-head h2{font-size:clamp(28px,3vw,40px);margin-top:16px;line-height:1.2;}
@@ -517,13 +497,6 @@ footer{background:var(--brun);color:var(--ivoire);padding-top:80px;}
       <a href="#histoire" class="btn btn-outline">Notre histoire</a>
     </div>
   </div>
-</section>
-
-<section>
-  <div class="wrap intro">
-    <div class="reveal">
-      <span class="eyebrow">Notre philosophie</span>
-      <h2 style="margin-top:16px;font-size:clamp(26px,3vw,36px);">De notre terre à votre maison 🌿</h2>
       <p style="margin-top:22px;color:var(--brun-doux);font-size:16.5px;">Notre coopérative est avant tout une histoire de famille.</p>
       <p style="margin-top:14px;color:var(--brun-doux);font-size:16.5px;">Une histoire née au cœur des montagnes marocaines, autour de nos arganiers familiaux et d'un savoir-faire transmis de génération en génération.</p>
       <p style="margin-top:14px;color:var(--brun-doux);font-size:16.5px;">Aujourd'hui, nous souhaitons partager avec vous des produits authentiques, préparés avec soin et inspirés de notre terroir.</p>
@@ -1081,31 +1054,6 @@ setTimeout(initReveal, 300);
 </script>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
-  const container = document.getElementById('heroParticles');
-  if(!container || typeof THREE === 'undefined') return;
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, container.clientWidth/container.clientHeight, 0.1, 100);
-  camera.position.z = 20;
-
-  const renderer = new THREE.WebGLRenderer({alpha:true, antialias:true});
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-  container.appendChild(renderer.domElement);
-
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-  const dirLight = new THREE.DirectionalLight(0xffe8c2, 1);
-  dirLight.position.set(5,10,8);
-  scene.add(dirLight);
-
-  const textureLoader = new THREE.TextureLoader();
-  const texPaths = { amande:'images/amande-3d.png', argan:'images/argan-3d.png', pistache:'images/pistache-3d.png' };
-  const textures = {};
-  const types = ['amande','argan','pistache'];
-
-  function makeItem(type){
     const tex = textures[type];
     const mat = new THREE.SpriteMaterial({map:tex, transparent:true, depthWrite:false});
     const sprite = new THREE.Sprite(mat);
